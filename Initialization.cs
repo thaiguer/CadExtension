@@ -6,7 +6,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace CadExtension;
 
-internal class Initialization : IExtensionApplication
+public class Initialization : IExtensionApplication
 {
     public void Initialize()
     {
