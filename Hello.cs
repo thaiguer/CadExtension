@@ -6,15 +6,12 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace CadExtension;
 
-public class Class1
+public class Hello
 {
     [CommandMethod("HELLO")]
     public void HelloCommand()
     {
-        // Get the AutoCAD editor.
         Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
-
-        // Display the "Hello, World!" message.
         ed.WriteMessage("Hello, World!\n");
     }
 }
