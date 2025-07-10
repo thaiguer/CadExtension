@@ -3,7 +3,7 @@
 internal class LayerInfo
 {
     public string LayerName { get; }
-    public bool IsOn { get; set; }
+    public bool IsOn { get; }
 
     public LayerInfo(string layerName, bool isOn)
     {
