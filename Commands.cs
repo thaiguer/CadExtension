@@ -11,18 +11,21 @@ public class Commands
     [CommandMethod("VS_SAVE_CURRENT")]
     public void SaveCurrentViewCommand()
     {
-        Prompt.WriteNewLine("Save Current Command not implemented");
+        var visibilityHandler = new VisibilityHandler();
+        visibilityHandler.SaveCurrentViewCommand();
     }
 
     [CommandMethod("VS_REMOVE_SAVED")]
     public void RemoveSavedViewsCommand()
     {
-        Prompt.WriteNewLine("Remove saved views Command not implemented");
+        var visibilityHandler = new VisibilityHandler();
+        visibilityHandler.RemoveSavedViewsCommand();
     }
 
     [CommandMethod("VS_RESTORE_SAVED")]
     public void RestoreSavedViewCommand()
     {
-        Prompt.WriteNewLine("Restore saved view Command not implemented");
+        var visibilityHandler = new VisibilityHandler();
+        visibilityHandler.RestoreSavedViewCommand();
     }
 }
