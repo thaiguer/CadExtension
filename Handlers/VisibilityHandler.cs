@@ -1,4 +1,4 @@
-﻿namespace CadExtension;
+﻿namespace CadExtension.Handlers;
 
 internal class VisibilityHandler
 {

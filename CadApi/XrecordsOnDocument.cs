@@ -1,13 +1,13 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.ApplicationServices;
 
-namespace CadExtension;
+namespace CadExtension.CadApi;
 
 internal class XrecordsOnDocument
 {
     internal void WriteStringToXrecord(string key, string json)
     {
-        Document document = Application.DocumentManager.MdiActiveDocument;
+        Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
@@ -32,7 +32,7 @@ internal class XrecordsOnDocument
 
     internal string ReadStringFromXrecord(string key)
     {
-        Document document = Application.DocumentManager.MdiActiveDocument;
+        Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
