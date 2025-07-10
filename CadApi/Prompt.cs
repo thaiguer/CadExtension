@@ -26,4 +26,23 @@ internal static class Prompt
         editor.WriteMessage($"{Environment.NewLine}");
         editor.WriteMessage($"{Environment.NewLine}{message}");
     }
+
+    internal static string AskUserForString(string message)
+    {
+        Document document = Application.DocumentManager.MdiActiveDocument;
+        Editor editor = document.Editor;
+
+        PromptStringOptions options = new PromptStringOptions($"{Environment.NewLine}{message}");
+        options.AllowSpaces = false;
+        options.DefaultValue = string.Empty;
+
+        PromptResult result = editor.GetString(options);
+
+        if (result.Status == PromptStatus.OK)
+        {
+            return result.StringResult;
+        }
+
+        return string.Empty;
+    }
 }

@@ -3,5 +3,5 @@
 internal class VisibleLayerSet : List<LayersInfo>
 {
     internal int Index { get; }
-    internal LayerInfo LayersInfo { get; }
+    internal LayersInfo LayersInfo { get; } = [];
 }
