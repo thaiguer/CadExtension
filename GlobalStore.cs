@@ -12,14 +12,14 @@ public class Class1
     public void WriteTest()
     {
         var xHandler = new XrecordsOnDocument();
-        xHandler.WriteJsonToXrecord("MyThing", "aaaSecretaaa");
+        xHandler.WriteStringToXrecord("MyThing", "aaaSecretaaa");
     }
 
     [CommandMethod("Test123Read")]
     public void ReadTest()
     {
         var xHandler = new XrecordsOnDocument();
-        var result = xHandler.ReadJsonFromXrecord("MyThing");
+        var result = xHandler.ReadStringFromXrecord("MyThing");
 
         Prompt.WriteNewLine(result);
     }
