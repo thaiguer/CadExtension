@@ -5,19 +5,9 @@ namespace CadExtension;
 
 internal class XrecordsOnDocument
 {
-    internal void WriteJsonToXrecord(string key, string json)
+    internal void WriteStringToXrecord(string key, string json)
     {
         Document document = Application.DocumentManager.MdiActiveDocument;
-        HandleWriteJsonToXrecord(key, json, document);
-    }
-
-    internal void WriteJsonToXrecord(string key, string json, Document document)
-    {
-        HandleWriteJsonToXrecord(key, json, document);
-    }
-
-    private void HandleWriteJsonToXrecord(string key, string json, Document document)
-    {
         Database database = document.Database;
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
@@ -40,7 +30,7 @@ internal class XrecordsOnDocument
         }
     }
 
-    internal string ReadJsonFromXrecord(string key)
+    internal string ReadStringFromXrecord(string key)
     {
         Document document = Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
