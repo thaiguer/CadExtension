@@ -1,10 +1,7 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.Runtime;
-using System.Xml.Linq;
+﻿using Autodesk.AutoCAD.Runtime;
+using CadExtension.CadApi;
 
-namespace CadExtension;
+namespace CadExtension.Examples;
 
 public class Class1
 {
