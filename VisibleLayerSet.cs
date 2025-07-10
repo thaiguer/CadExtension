@@ -1,4 +1,6 @@
-﻿namespace CadExtension;
+﻿using CadExtension.LayerObjects;
+
+namespace CadExtension;
 
 internal class VisibleLayerSet : List<LayersInfo>
 {

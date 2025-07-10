@@ -1,13 +1,13 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 
-namespace CadExtension;
+namespace CadExtension.LayerObjects;
 
 internal class LayersInfo : List<LayerInfo>
 {
     internal void GetLayersState()
     {
-        Document document = Application.DocumentManager.MdiActiveDocument;
+        Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
         List<LayerInfo> layers = new List<LayerInfo>();
@@ -27,7 +27,7 @@ internal class LayersInfo : List<LayerInfo>
 
     internal void UpdateLayersState()
     {
-        Document document = Application.DocumentManager.MdiActiveDocument;
+        Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())

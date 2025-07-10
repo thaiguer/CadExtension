@@ -1,4 +1,4 @@
-﻿namespace CadExtension;
+﻿namespace CadExtension.LayerObjects;
 
 internal class LayerInfo
 {
