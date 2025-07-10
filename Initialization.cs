@@ -11,7 +11,7 @@ public class Initialization : IExtensionApplication
     public void Initialize()
     {
         Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
-        ed.WriteMessage("It's alive!\n");
+        ed.WriteMessage("Cad Extension Dll loaded. It's alive!\n");
     }
 
     public void Terminate()
