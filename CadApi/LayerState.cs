@@ -1,16 +1,17 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using CadExtension.LayerObjects;
 
-namespace CadExtension.LayerObjects;
+namespace CadExtension.CadApi;
 
-internal class LayersInfo : List<LayerInfo>
+internal static class LayerState
 {
-    internal void GetLayersState()
+    internal static List<LayerObjects.LayerState> GetLayersState()
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
-        List<LayerInfo> layers = new List<LayerInfo>();
+        List<LayerObjects.LayerState> layers = new List<LayerObjects.LayerState>();
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
         {
@@ -18,14 +19,16 @@ internal class LayersInfo : List<LayerInfo>
             foreach (ObjectId layerId in layerTable)
             {
                 LayerTableRecord layerRecord = transaction.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
-                Add(new LayerInfo(layerRecord.Name, layerRecord.IsOff == false));
+                layers.Add(new LayerObjects.LayerState(layerRecord.Name, layerRecord.IsOff == false));
             }
 
             transaction.Commit();
         }
+
+        return layers;
     }
 
-    internal void UpdateLayersState()
+    internal static void UpdateLayersState(List<LayerObjects.LayerState> layers)
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
@@ -34,7 +37,7 @@ internal class LayersInfo : List<LayerInfo>
         {
             LayerTable layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
-            foreach (LayerInfo info in this)
+            foreach (LayerObjects.LayerState info in layers)
             {
                 if (layerTable.Has(info.LayerName))
                 {

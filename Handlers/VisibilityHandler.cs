@@ -7,18 +7,18 @@ namespace CadExtension.Handlers;
 
 internal class VisibilityHandler
 {
-    private string _key = "MyExtension";
-    
     internal void SaveCurrentViewCommand()
     {
         var name = Prompt.AskUserForString("Digite um nome para o Layer Visible Set:");
         if (name == string.Empty) return;
-                
-        var layersInfo = new VisibleLayerSet(0, name, new LayersInfo());
-        string jsonString = JsonSerializer.Serialize(layersInfo);
 
-        var xrecordsOnDocument = new XrecordsOnDocument();
-        xrecordsOnDocument.WriteStringToXrecord(_key, jsonString);
+        var layerStateSet = new LayersStateSet(name);
+        layerStateSet.ReadCurrentLayersState();
+
+        var layersStateSetCollection = new LayersStateSetCollection();
+        layersStateSetCollection.Append(layerStateSet);
+        
+        //tratar o erro caso append (nome repetido)
     }
 
     internal void RemoveSavedViewsCommand()
@@ -28,7 +28,13 @@ internal class VisibilityHandler
 
     internal void RestoreSavedViewCommand()
     {
-        var layersInfo = JsonSerializer.Deserialize<VisibleLayerSet>(json);
-        var layersState = new VisibleLayerSet();
+        var layersStateSetCollection = new LayersStateSetCollection();
+
+        var a = layersStateSetCollection.LayerStates;
+
+        foreach (var layerStateSet in a)
+        {
+            Prompt.WriteNewLine(layerStateSet.Name);
+        }
     }
 }

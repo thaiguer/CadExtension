@@ -1,7 +1,6 @@
 ﻿using Autodesk.AutoCAD.Runtime;
-using CadExtension.Handlers;
 
-namespace CadExtension;
+namespace CadExtension.Handlers;
 
 public class Commands
 {
