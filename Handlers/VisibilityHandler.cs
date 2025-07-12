@@ -12,6 +12,10 @@ internal class VisibilityHandler
         var name = Prompt.AskUserForString("Digite um nome para o Layer Visible Set:");
         if (name == string.Empty) return;
 
+        var a = new XrecordsOnDocument();
+        a.WriteStringToXrecord("123", name);
+        return;
+
         var layerStateSet = new LayersStateSet(name);
         layerStateSet.ReadCurrentLayersState();
 
@@ -28,11 +32,16 @@ internal class VisibilityHandler
 
     internal void RestoreSavedViewCommand()
     {
+        var a = new XrecordsOnDocument();
+        var b = a.ReadStringFromXrecord("123");
+        Prompt.WriteLine(b);
+        return;
+
         var layersStateSetCollection = new LayersStateSetCollection();
 
-        var a = layersStateSetCollection.LayerStates;
+        var ca = layersStateSetCollection.LayerStates;
 
-        foreach (var layerStateSet in a)
+        foreach (var layerStateSet in ca)
         {
             Prompt.WriteNewLine(layerStateSet.Name);
         }

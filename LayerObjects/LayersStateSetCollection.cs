@@ -9,12 +9,7 @@ internal class LayersStateSetCollection
     internal List<LayersStateSet> LayerStates
     {
         get { return ReadFromMemory(); }
-        private set {}
-    }
-
-    internal LayersStateSetCollection()
-    {
-        LayerStates = new List<LayersStateSet>();
+        set { }
     }
 
     private List<LayersStateSet> ReadFromMemory()
