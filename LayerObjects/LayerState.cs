@@ -1,6 +1,6 @@
 ﻿namespace CadExtension.LayerObjects;
 
-internal class LayerState
+public class LayerState
 {
     public string LayerName { get; }
     public bool IsOn { get; }

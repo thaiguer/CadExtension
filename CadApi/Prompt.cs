@@ -45,4 +45,26 @@ internal static class Prompt
 
         return string.Empty;
     }
+
+    internal static int AskUserForInt(string message)
+    {
+        Document document = Application.DocumentManager.MdiActiveDocument;
+        Editor editor = document.Editor;
+
+        PromptIntegerOptions options = new PromptIntegerOptions($"{Environment.NewLine}{message}")
+        {
+            AllowZero = false,
+            AllowNegative = false,
+            DefaultValue = 1
+        };
+
+        PromptIntegerResult result = editor.GetInteger(options);
+
+        if (result.Status == PromptStatus.OK)
+        {
+            return result.Value;
+        }
+
+        return -1;
+    }
 }

@@ -1,22 +1,24 @@
 ﻿using CadExtension.CadApi;
 using CadExtension.LayerObjects;
 using System.Text.Json;
-using System;
+using System.Text.Json.Nodes;
 
 namespace CadExtension.Handlers;
 
 internal class VisibilityHandler
 {
+    string myKey = "MyKey";
+    
     internal void SaveCurrentViewCommand()
     {
         var name = Prompt.AskUserForString("Digite um nome para o salvar a CurrentView:");
         if (name == string.Empty) return;
 
-        var layerStateSet = new LayersStateSet(name);
-        layerStateSet.ReadCurrentLayersState();
+        var currentStateView = Layers.GetLayersState();
+        var jsonObject = JsonSerializer.Serialize(currentStateView);
 
-        var layersStateSetCollection = new LayersStateSetCollection();
-        layersStateSetCollection.Append(layerStateSet);
+        var xrecordsOnDocument = new XrecordsOnDocument();
+        xrecordsOnDocument.WriteStringToXrecord(myKey, jsonObject);
     }
 
     internal void RemoveSavedViewsCommand()
@@ -26,10 +28,12 @@ internal class VisibilityHandler
 
     internal void RestoreSavedViewCommand()
     {
-        var layersStateSetCollection = new LayersStateSetCollection();
-        foreach (var layerStateSet in layersStateSetCollection.LayerStates)
+        var xrecordsOnDocument = new XrecordsOnDocument();
+        var savedJsonObject = xrecordsOnDocument.ReadStringFromXrecord(myKey);
+        var savedStateView = JsonSerializer.Deserialize<List<LayerState>>(savedJsonObject);
+        if(savedStateView != null)
         {
-            Prompt.WriteNewLine(layerStateSet.Name);
+            Layers.UpdateLayersState(savedStateView);
         }
     }
 }

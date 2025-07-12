@@ -4,14 +4,14 @@ using CadExtension.LayerObjects;
 
 namespace CadExtension.CadApi;
 
-internal static class LayerState
+internal static class Layers
 {
-    internal static List<LayerObjects.LayerState> GetLayersState()
+    internal static List<LayerState> GetLayersState()
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
-        List<LayerObjects.LayerState> layers = new List<LayerObjects.LayerState>();
+        List<LayerObjects.LayerState> layers = new List<LayerState>();
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
         {
@@ -28,7 +28,7 @@ internal static class LayerState
         return layers;
     }
 
-    internal static void UpdateLayersState(List<LayerObjects.LayerState> layers)
+    internal static void UpdateLayersState(List<LayerState> layers)
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
@@ -37,7 +37,7 @@ internal static class LayerState
         {
             LayerTable layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
-            foreach (LayerObjects.LayerState info in layers)
+            foreach (LayerState info in layers)
             {
                 if (layerTable.Has(info.LayerName))
                 {
