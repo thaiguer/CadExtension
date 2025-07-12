@@ -26,16 +26,8 @@ internal class VisibilityHandler
 
     internal void RestoreSavedViewCommand()
     {
-        var a = new XrecordsOnDocument();
-        var b = a.ReadStringFromXrecord("123");
-        Prompt.WriteLine(b);
-        return;
-
         var layersStateSetCollection = new LayersStateSetCollection();
-
-        var ca = layersStateSetCollection.LayerStates;
-
-        foreach (var layerStateSet in ca)
+        foreach (var layerStateSet in layersStateSetCollection.LayerStates)
         {
             Prompt.WriteNewLine(layerStateSet.Name);
         }
