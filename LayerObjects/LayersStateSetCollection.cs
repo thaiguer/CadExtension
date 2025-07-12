@@ -19,11 +19,11 @@ internal class LayersStateSetCollection
 
         try
         {
-            return JsonSerializer.Deserialize<List<LayersStateSet>>(layersStateSetCollectionJson) ?? [];
+            return JsonSerializer.Deserialize<List<LayersStateSet>>(layersStateSetCollectionJson) ?? new List<LayersStateSet>();
         }
         catch
         {
-            return [];
+            return new List<LayersStateSet>();
         }
     }
 

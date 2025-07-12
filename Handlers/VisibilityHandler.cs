@@ -9,20 +9,14 @@ internal class VisibilityHandler
 {
     internal void SaveCurrentViewCommand()
     {
-        var name = Prompt.AskUserForString("Digite um nome para o Layer Visible Set:");
+        var name = Prompt.AskUserForString("Digite um nome para o salvar a CurrentView:");
         if (name == string.Empty) return;
-
-        var a = new XrecordsOnDocument();
-        a.WriteStringToXrecord("123", name);
-        return;
 
         var layerStateSet = new LayersStateSet(name);
         layerStateSet.ReadCurrentLayersState();
 
         var layersStateSetCollection = new LayersStateSetCollection();
         layersStateSetCollection.Append(layerStateSet);
-        
-        //tratar o erro caso append (nome repetido)
     }
 
     internal void RemoveSavedViewsCommand()
