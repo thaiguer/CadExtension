@@ -38,15 +38,18 @@ internal class XrecordsOnDocument
         using (Transaction transaction = database.TransactionManager.StartTransaction())
         {
             DBDictionary nod = transaction.GetObject(database.NamedObjectsDictionaryId, OpenMode.ForRead) as DBDictionary;
+            if (nod == null) return string.Empty;
 
             if (!nod.Contains(key))
-                return null;
+                return string.Empty;
 
             Xrecord xrecord = transaction.GetObject(nod.GetAt(key), OpenMode.ForRead) as Xrecord;
+            if (xrecord == null) return string.Empty;
+
             ResultBuffer buffer = xrecord.Data;
 
             if (buffer == null)
-                return null;
+                return string.Empty;
 
             TypedValue[] values = buffer.AsArray();
             return values.Length > 0 ? values[0].Value.ToString() : null;

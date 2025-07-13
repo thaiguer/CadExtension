@@ -53,9 +53,9 @@ internal static class Prompt
 
         PromptIntegerOptions options = new PromptIntegerOptions($"{Environment.NewLine}{message}")
         {
-            AllowZero = false,
+            AllowZero = true,
             AllowNegative = false,
-            DefaultValue = 1
+            DefaultValue = 0
         };
 
         PromptIntegerResult result = editor.GetInteger(options);
