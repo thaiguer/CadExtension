@@ -2,9 +2,9 @@
 
 public class RecordStates
 {
-    public List<List<LayerState>> LayerStates { get; set; }
+    public List<LayerStateCollection> LayerStates { get; set; }
 
-    public RecordStates(List<List<LayerState>> layerStates)
+    public RecordStates(List<LayerStateCollection> layerStates)
     {
         LayerStates = layerStates;
     }

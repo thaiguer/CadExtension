@@ -6,12 +6,12 @@ namespace CadExtension.CadApi;
 
 internal static class Layers
 {
-    internal static List<LayerState> GetLayersState()
+    internal static LayerStateCollection GetLayersState()
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
-        List<LayerObjects.LayerState> layers = new List<LayerState>();
+        LayerStateCollection layers = new LayerStateCollection();
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
         {
@@ -19,7 +19,7 @@ internal static class Layers
             foreach (ObjectId layerId in layerTable)
             {
                 LayerTableRecord layerRecord = transaction.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
-                layers.Add(new LayerObjects.LayerState(layerRecord.Name, layerRecord.IsOff == false));
+                layers.Add(new LayerState(layerRecord.Name, layerRecord.IsOff == false));
             }
 
             transaction.Commit();
@@ -28,21 +28,42 @@ internal static class Layers
         return layers;
     }
 
-    internal static void UpdateLayersState(List<LayerState> layers)
+    internal static void UpdateLayersState(LayerStateCollection layers)
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Database database = document.Database;
 
         using (Transaction transaction = database.TransactionManager.StartTransaction())
         {
+            //get layers
             LayerTable layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForRead) as LayerTable;
-
-            foreach (LayerState info in layers)
+            if (layerTable == null)
             {
-                if (layerTable.Has(info.LayerName))
+                transaction.Commit();
+                return;
+            }
+
+            //turn all off
+            foreach (var objectId in layerTable)
+            {
+                var layerTableRecord = transaction.GetObject(objectId, OpenMode.ForWrite) as LayerTableRecord;
+                if (layerTableRecord == null) continue;
+
+                layerTableRecord.IsOff = true;
+            }
+
+            //turn some on
+            foreach (var objectId in layerTable)
+            {
+                var layerTableRecord = transaction.GetObject(objectId, OpenMode.ForWrite) as LayerTableRecord;
+                if (layerTableRecord == null) continue;
+                
+                foreach(var layer in layers)
                 {
-                    LayerTableRecord layerRecord = transaction.GetObject(layerTable[info.LayerName], OpenMode.ForWrite) as LayerTableRecord;
-                    layerRecord.IsOff = !info.IsOn;
+                    if (layer.LayerName == layerTableRecord.Name && layer.IsOn == true)
+                    {
+                        layerTableRecord.IsOff = false;
+                    }
                 }
             }
 

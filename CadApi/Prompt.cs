@@ -9,13 +9,6 @@ internal static class Prompt
     {
         Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
         Editor editor = document.Editor;
-        editor.WriteMessage($"{message}");
-    }
-
-    internal static void WriteLine(string message)
-    {
-        Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-        Editor editor = document.Editor;
         editor.WriteMessage($"{Environment.NewLine}{message}");
     }
 

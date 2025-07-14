@@ -55,4 +55,24 @@ internal class XrecordsOnDocument
             return values.Length > 0 ? values[0].Value.ToString() : null;
         }
     }
+
+    internal void DeleteXRecord(string key)
+    {
+        Document document = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+        Database database = document.Database;
+
+        using (Transaction transaction = database.TransactionManager.StartTransaction())
+        {
+            DBDictionary nod = transaction.GetObject(database.NamedObjectsDictionaryId, OpenMode.ForWrite) as DBDictionary;
+
+            if (nod.Contains(key))
+            {
+                DBObject obj = transaction.GetObject(nod.GetAt(key), OpenMode.ForWrite);
+                obj.Erase(true);
+            }
+
+            transaction.Commit();
+        }
+    }
+
 }

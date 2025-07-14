@@ -4,24 +4,31 @@ namespace CadExtension.Handlers;
 
 public class Commands
 {
-    [CommandMethod("VS_SAVE_CURRENT")]
+    [CommandMethod("VS_SAVE")]
     public void SaveCurrentViewCommand()
     {
         var visibilityHandler = new VisibilityHandler();
         visibilityHandler.SaveCurrentViewCommand();
     }
 
-    [CommandMethod("VS_REMOVE_SAVED")]
-    public void RemoveSavedViewsCommand()
-    {
-        var visibilityHandler = new VisibilityHandler();
-        visibilityHandler.RemoveSavedViewsCommand();
-    }
-
-    [CommandMethod("VS_RESTORE_SAVED")]
+    [CommandMethod("VS_RESTORE")]
     public void RestoreSavedViewCommand()
     {
         var visibilityHandler = new VisibilityHandler();
         visibilityHandler.RestoreSavedViewCommand();
+    }
+
+    [CommandMethod("VS_REMOVE_ALL")]
+    public void RemoveAllSavedViewsCommand()
+    {
+        var visibilityHandler = new VisibilityHandler();
+        visibilityHandler.RemoveAllSavedViewsCommand();
+    }
+
+    [CommandMethod("VS_REMOVE_ONE")]
+    public void RemoveOneSavedViewCommand()
+    {
+        var visibilityHandler = new VisibilityHandler();
+        visibilityHandler.RemoveOneSavedViewCommand();
     }
 }

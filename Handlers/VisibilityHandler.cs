@@ -12,7 +12,6 @@ internal class VisibilityHandler
     {
         string name = Prompt.AskUserForString("Digite um nome para o salvar a CurrentView:");
         if (name == string.Empty) return;
-        //salvar o nome da view
 
         var xrecordsOnDocument = new XrecordsOnDocument();
         var savedJsonObject = xrecordsOnDocument.ReadStringFromXrecord(myKey);
@@ -20,42 +19,87 @@ internal class VisibilityHandler
         RecordStates savedStateViews;
         if(savedJsonObject != string.Empty)
         {
-            savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<List<LayerState>>());
+            savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<LayerStateCollection>());
         }
         else
         {
-            savedStateViews = new RecordStates(new List<List<LayerState>>());
+            savedStateViews = new RecordStates(new List<LayerStateCollection>());
         }         
 
         var currentState = Layers.GetLayersState();
+        currentState.Name = name;
         savedStateViews.LayerStates.Add(currentState);
 
         var newSavedStateViews = JsonSerializer.Serialize(savedStateViews);
         xrecordsOnDocument.WriteStringToXrecord(myKey, newSavedStateViews);
     }
 
-    internal void RemoveSavedViewsCommand()
+    internal void RemoveAllSavedViewsCommand()
     {
+        var xrecordsOnDocument = new XrecordsOnDocument();
+        xrecordsOnDocument.DeleteXRecord(myKey);
+    }
 
+    internal void RemoveOneSavedViewCommand()
+    {
+        var xrecordsOnDocument = new XrecordsOnDocument();
+        var savedJsonObject = xrecordsOnDocument.ReadStringFromXrecord(myKey);
+        var savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<LayerStateCollection>());
+
+        if (savedStateViews.LayerStates.Count <= 0)
+        {
+            Prompt.WriteNewLine("Não há views salvas");
+            return;
+        }
+
+        int i = 0;
+        foreach (var layerStates in savedStateViews.LayerStates)
+        {
+            Prompt.WriteNewLine(savedStateViews.LayerStates[i].Name);
+            i++;
+        }
+        int index = Prompt.AskUserForInt("Digite o índice da View para remover:");
+
+        if (index < 0) return;
+        if (index >= savedStateViews.LayerStates.Count)
+        {
+            Prompt.WriteNewLine("Índice inválido");
+            return;
+        }
+
+        RemoveSavedView(index);
+    }
+
+    private void RemoveSavedView(int index)
+    {
+        var xrecordsOnDocument = new XrecordsOnDocument();
+        var savedJsonObject = xrecordsOnDocument.ReadStringFromXrecord(myKey);
+
+        if (savedJsonObject == string.Empty) return;
+        RecordStates savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<LayerStateCollection>());
+
+        savedStateViews.LayerStates.RemoveAt(index);
+
+        var newSavedStateViews = JsonSerializer.Serialize(savedStateViews);
+        xrecordsOnDocument.WriteStringToXrecord(myKey, newSavedStateViews);
     }
 
     internal void RestoreSavedViewCommand()
     {
         var xrecordsOnDocument = new XrecordsOnDocument();
         var savedJsonObject = xrecordsOnDocument.ReadStringFromXrecord(myKey);
-        var savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<List<LayerState>>());
+        var savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<LayerStateCollection>());
 
         if(savedStateViews.LayerStates.Count <= 0)
         {
-            Prompt.WriteLine("Não há views salvas");
+            Prompt.WriteNewLine("Não há views salvas");
             return;
         }
 
         int i = 0;
         foreach(var layerStates in savedStateViews.LayerStates)
         {
-            //acrescentar o nome da view
-            Prompt.WriteLine(savedStateViews.LayerStates[i].ToString());
+            Prompt.WriteNewLine(savedStateViews.LayerStates[i].Name);
             i++;
         }
         int index = Prompt.AskUserForInt("Digite o índice da View para restaurar:");
@@ -63,7 +107,7 @@ internal class VisibilityHandler
         if (index < 0) return;
         if (index >= savedStateViews.LayerStates.Count)
         {
-            Prompt.WriteLine("Índice inválido");
+            Prompt.WriteNewLine("Índice inválido");
             return;
         }
 
