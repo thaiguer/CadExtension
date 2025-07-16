@@ -88,7 +88,16 @@ internal class VisibilityHandler
     {
         var xrecordsOnDocument = new XrecordsOnDocument();
         var savedJsonObject = xrecordsOnDocument.ReadStringFromXrecord(myKey);
-        var savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<LayerStateCollection>());
+
+        RecordStates savedStateViews;
+        try
+        {
+            savedStateViews = JsonSerializer.Deserialize<RecordStates>(savedJsonObject) ?? new RecordStates(new List<LayerStateCollection>());
+        }
+        catch
+        {
+            savedStateViews = new RecordStates(new List<LayerStateCollection>());
+        }
 
         if(savedStateViews.LayerStates.Count <= 0)
         {
@@ -99,7 +108,7 @@ internal class VisibilityHandler
         int i = 0;
         foreach(var layerStates in savedStateViews.LayerStates)
         {
-            Prompt.WriteNewLine(savedStateViews.LayerStates[i].Name);
+            Prompt.WriteNewLine($"{i}:{savedStateViews.LayerStates[i].Name}");
             i++;
         }
         int index = Prompt.AskUserForInt("Digite o índice da View para restaurar:");
