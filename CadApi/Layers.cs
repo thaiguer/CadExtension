@@ -19,7 +19,7 @@ internal static class Layers
             foreach (ObjectId layerId in layerTable)
             {
                 LayerTableRecord layerRecord = transaction.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
-                layers.Add(new LayerState(layerRecord.Name, layerRecord.IsOff == false));
+                layers.LayerStates.Add(new LayerState(layerRecord.Name, layerRecord.IsOff == false));
             }
 
             transaction.Commit();
@@ -58,7 +58,7 @@ internal static class Layers
                 var layerTableRecord = transaction.GetObject(objectId, OpenMode.ForWrite) as LayerTableRecord;
                 if (layerTableRecord == null) continue;
                 
-                foreach(var layer in layers)
+                foreach(var layer in layers.LayerStates)
                 {
                     if (layer.LayerName == layerTableRecord.Name && layer.IsOn == true)
                     {
